@@ -36,7 +36,7 @@ secret:
   # S3 Secret Key
   secretKey: ""
   # Endpoint
-  endpoint: https://storage.yandexcloud.net
+  endpoint: https://s3.eu-central-1.amazonaws.com
 
 tolerations:
   all: false
