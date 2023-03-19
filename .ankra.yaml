@@ -1,6 +1,4 @@
 stages:
-  predeploy:
-    - prepare
   dev:
     - dry-run
     - deploy
