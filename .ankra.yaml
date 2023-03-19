@@ -7,23 +7,12 @@ stages:
     
 
 variables:
-  VERSION: v0.0.1
-  NAMESPACE: test
-  HELM_NAME: test-scheduler
-  HELM_NAMESPACE: test
-  HELM_CHART: helm/
-  HELM_CHART_VERSION: 0.1.1
-  GIT_PROVIDER: github
-  GIT_CREDENTIAL: github
-  TEST_CLUSTER_NAME: dev
-  DEPLOY_CLUSTER_NAME: dev
-  SERVICE_NAME: scheduler
-  SERVICE_URL: scheduler.$NAMESPACE.ankra.app
+  TARGET: dev
 
 dev:
   target:
     match:
-      name: $DEPLOY_CLUSTER_NAME
+      name: $TARGET
   dry-run:
     secrets:
       - AWS_ACCESS_KEY_ID
