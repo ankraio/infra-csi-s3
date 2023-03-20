@@ -3,8 +3,6 @@ stages:
     - dry-run
     - deploy
 
-    
-
 variables:
   TARGET: dev
 
@@ -28,20 +26,6 @@ dev:
           - --set secret.endpoint=https://s3.eu-central-1.amazonaws.com
           - --dry-run
   deploy:
-    secrets:
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-    helm:
-      - action: upgrade
-        build_dependencies: true
-        name: csi-s3
-        namespace: kube-system
-        chart: $WORKSPACE/deploy/helm
-        extra_args:
-          -  --set secret.accessKey=$AWS_ACCESS_KEY_ID
-          - --set secret.secretKey=$AWS_SECRET_ACCESS_KEY
-          - --set secret.endpoint=https://s3.eu-central-1.amazonaws.com
-  test:
     secrets:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
