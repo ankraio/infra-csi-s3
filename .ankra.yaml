@@ -2,6 +2,7 @@ stages:
   dev:
     - dry-run
     - deploy
+    - test
     
 
 variables:
