@@ -4,7 +4,17 @@ stages:
     - deploy
 
 variables:
-  TARGET: dev
+  - name: HELM_RELEASE_NAME
+    value: "csi-s3"
+    description: "Helm release name"
+  - name: NAMESPACE
+    value: "csi-s3"
+    description: "Namespace to deploy to"
+  - name: TARGET
+    default: dev
+    options: 
+      - dev
+    description: "Target cluster"
 
 dev:
   target:
@@ -15,27 +25,29 @@ dev:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
     helm:
-      - action: upgrade
-        build_dependencies: true
-        name: csi-s3
-        namespace: kube-system
-        chart: $WORKSPACE/deploy/helm
-        extra_args:
-          -  --set secret.accessKey=$AWS_ACCESS_KEY_ID
-          - --set secret.secretKey=$AWS_SECRET_ACCESS_KEY
-          - --set secret.endpoint=https://s3.eu-central-1.amazonaws.com
-          - --dry-run
+      actions:
+        - action: upgrade
+          build_dependencies: true
+          name: "$HELM_RELEASE_NAME"
+          namespace: "$NAMESPACE"
+          chart: $WORKSPACE/deploy/helm
+          dry_run: true
+          extra_args:
+            - --set secret.accessKey=$AWS_ACCESS_KEY_ID
+            - --set secret.secretKey=$AWS_SECRET_ACCESS_KEY
+            - --set secret.endpoint=https://s3.eu-central-1.amazonaws.com
   deploy:
     secrets:
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
     helm:
-      - action: upgrade
-        build_dependencies: true
-        name: csi-s3
-        namespace: kube-system
-        chart: $WORKSPACE/deploy/helm
-        extra_args:
-          -  --set secret.accessKey=$AWS_ACCESS_KEY_ID
-          - --set secret.secretKey=$AWS_SECRET_ACCESS_KEY
-          - --set secret.endpoint=https://s3.eu-central-1.amazonaws.com
+      actions:
+        - action: upgrade
+          build_dependencies: true
+          name: "$HELM_RELEASE_NAME"
+          namespace: "$NAMESPACE"
+          chart: $WORKSPACE/deploy/helm
+          extra_args:
+            - --set secret.accessKey=$AWS_ACCESS_KEY_ID
+            - --set secret.secretKey=$AWS_SECRET_ACCESS_KEY
+            - --set secret.endpoint=https://s3.eu-central-1.amazonaws.com
